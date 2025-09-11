@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* { @apply transition-colors duration-200; }
+:root { color-scheme: light dark; }
+
+body {
+  @apply bg-white dark:bg-neutral-950 text-neutral-800 dark:text-neutral-100;
+  background-image:
+    radial-gradient(1200px 600px at 100% -10%, rgba(14,165,233,.08), transparent 60%),
+    radial-gradient(1000px 500px at 0% 110%, rgba(16,185,129,.08), transparent 60%);
+}

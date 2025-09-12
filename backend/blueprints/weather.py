@@ -11,4 +11,4 @@ def weather_forecast():
         days = int(request.args.get("days", "7"))
     except ValueError:
         return jsonify({"error": "invalid query params"}), 400
-    return jsonify(forecast(lat, lon, days))
+    return jsonify(forecast(lat=lat, lon=lon, days=days))

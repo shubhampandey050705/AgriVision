@@ -55,9 +55,9 @@ def create_app():
         lon = request.args.get("lon", type=float)
 
         if city:
-            return jsonify(forecast(city)), 200
-        elif lat and lon:
-            return jsonify(forecast(lat, lon)), 200
+            return jsonify(forecast(city=city)), 200
+        elif lat is not None and lon is not None:
+            return jsonify(forecast(lat=lat, lon=lon)), 200
         else:
             return jsonify({"error": "Provide either ?city=Delhi or ?lat=..&lon=.."}), 400
 

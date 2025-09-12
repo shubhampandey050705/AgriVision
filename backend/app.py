@@ -2,10 +2,16 @@
 from flask import Flask, jsonify
 from flask_cors import CORS
 from werkzeug.exceptions import HTTPException
+
 from config import Config
 from db import Base, engine
 from models import Field  # ensure model module is imported so metadata is registered
 from blueprints import register_blueprints
+
+# Import your weather service
+from services.weather_service import forecast
+
+
 
 def create_app():
     app = Flask(__name__)
@@ -18,10 +24,8 @@ def create_app():
     Base.metadata.create_all(bind=engine)
 
     # ---- CORS ----
-    # Use Config.CORS_ORIGINS if provided, otherwise allow Vite dev origins.
     default_origins = ["http://localhost:5173", "http://127.0.0.1:5173"]
     origins = getattr(Config, "CORS_ORIGINS", default_origins) or default_origins
-    # Correct flask-cors signature: supports_credentials is a top-level arg
     CORS(
         app,
         resources={r"/api/*": {"origins": origins}},
@@ -40,6 +44,22 @@ def create_app():
     @app.get("/api/healthz")
     def healthz():
         return jsonify({"status": "ok"}), 200
+
+    # ---- Weather API ----
+    @app.get("/api/weather")
+    def get_weather():
+        """Fetch forecast for a given city or coordinates."""
+        from flask import request
+        city = request.args.get("city")
+        lat = request.args.get("lat", type=float)
+        lon = request.args.get("lon", type=float)
+
+        if city:
+            return jsonify(forecast(city)), 200
+        elif lat and lon:
+            return jsonify(forecast(lat, lon)), 200
+        else:
+            return jsonify({"error": "Provide either ?city=Delhi or ?lat=..&lon=.."}), 400
 
     # ---- Error handlers (always return JSON) ----
     @app.errorhandler(400)
@@ -71,7 +91,8 @@ def create_app():
 
     return app
 
+
 if __name__ == "__main__":
     app = create_app()
-    # 127.0.0.1 avoids some Windows firewall prompts; change to 0.0.0.0 if needed.
-    app.run(host="127.0.0.1", port=5000, debug=True)
+    # Use 0.0.0.0 so frontend can reach backend on Docker/Render/other devices
+    app.run(host="0.0.0.0", port=5000, debug=True)

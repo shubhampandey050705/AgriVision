@@ -80,7 +80,7 @@ cd AgriVision
 2. Backend (Flask)
 bash
 Copy code
-cd agrivision-backend
+cd backend
 python -m venv .venv
 # activate venv
 .venv\Scripts\activate      # Windows

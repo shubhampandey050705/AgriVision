@@ -61,8 +61,10 @@ export function marketForecast(body) {
   return http("/markets/forecast", { method: "POST", json: body });
 }
 // Backwards-compatible alias some pages may import
-export function fetchMarketPrices(params) {
-  return marketForecast(params);
+export function fetchMarketPrices(params = {}) {
+  // Provide sensible defaults so the dashboard can call this without args
+  const { commodity = "wheat", mandi = "delhi", horizon_days = 7 } = params;
+  return marketForecast({ commodity, mandi, horizon_days });
 }
 
 // Weather

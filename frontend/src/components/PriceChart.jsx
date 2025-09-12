@@ -1,17 +1,31 @@
-import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid } from "recharts";
+export default function PriceChart({ data = [] }) {
+  const prices = data.map(d => d.price);
+  if (!prices.length) {
+    return <div className="h-56" />;
+  }
 
-export default function PriceChart({ data=[] }) {
+  const min = Math.min(...prices);
+  const max = Math.max(...prices);
+  const points = data
+    .map((d, i) => {
+      const x = (i / Math.max(data.length - 1, 1)) * 100;
+      const y =
+        max === min ? 50 : 100 - ((d.price - min) / (max - min)) * 100;
+      return `${x},${y}`;
+    })
+    .join(" ");
+
   return (
     <div className="h-56">
-      <ResponsiveContainer width="100%" height="100%">
-        <LineChart data={data}>
-          <CartesianGrid strokeOpacity={0.15} vertical={false}/>
-          <XAxis dataKey="date" tick={{ fontSize: 12 }} />
-          <YAxis tick={{ fontSize: 12 }} />
-          <Tooltip />
-          <Line type="monotone" dataKey="price" stroke="#0ea5e9" strokeWidth={2} dot={false} />
-        </LineChart>
-      </ResponsiveContainer>
+      <svg viewBox="0 0 100 100" className="w-full h-full">
+        <polyline
+          points={points}
+          fill="none"
+          stroke="#0ea5e9"
+          strokeWidth="2"
+        />
+      </svg>
     </div>
   );
 }
+

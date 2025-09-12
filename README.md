@@ -7,23 +7,24 @@ It provides farmers with tools for **field management, crop/disease detection, m
 
 ## 📂 Project Structure
 
+```text
 AgriVision/
 │
-├── agrivision-backend/ # Flask backend
-│ ├── blueprints/ # Modular route handlers (auth, fields, markets, weather, etc.)
-│ ├── services/ # Service layer for APIs/ML models
-│ ├── app.py # Flask entry point
-│ ├── config.py # Config (CORS, DB, API keys)
-│ ├── db.py # SQLAlchemy DB connection
-│ ├── models.py # Database models
-│ └── requirements.txt # Python dependencies
+├── agrivision-backend/        # Flask backend
+│   ├── blueprints/            # Modular route handlers (auth, fields, markets, weather, etc.)
+│   ├── services/              # Service layer for APIs/ML models
+│   ├── app.py                 # Flask entry point
+│   ├── config.py              # Config (CORS, DB, API keys)
+│   ├── db.py                  # SQLAlchemy DB connection
+│   ├── models.py              # Database models
+│   └── requirements.txt       # Python dependencies
 │
-├── agrivision-frontend/ # React + Vite frontend
-│ ├── src/ # Components, pages, hooks
-│ ├── vite.config.js # Dev server + API proxy
-│ └── package.json # Frontend dependencies
+├── agrivision-frontend/       # React + Vite frontend
+│   ├── src/                   # Components, pages, hooks
+│   ├── vite.config.js         # Dev server + API proxy
+│   └── package.json           # Frontend dependencies
 │
-└── README.md # This file
+└── README.md                  # Project documentation
 
 ---
 
@@ -133,4 +134,5 @@ npm run dev
 Create .env in agrivision-frontend/:
 
 VITE_API_URL=http://127.0.0.1:5000
+
 

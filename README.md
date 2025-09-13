@@ -83,7 +83,7 @@ Copy code
 cd backend
 python -m venv .venv
 # activate venv
-.venv\Scripts\activate      # Windows
+.venv\Scripts\activate
 
 
 pip install -r requirements.txt

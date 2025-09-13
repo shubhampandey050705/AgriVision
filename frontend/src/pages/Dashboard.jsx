@@ -1,3 +1,4 @@
+// src/pages/Dashboard.jsx
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Card from "../components/ui/Card";
@@ -18,12 +19,12 @@ export default function Dashboard() {
     (async ()=>{
       try {
         const [r, p] = await Promise.allSettled([
-          fetchRecommendations({ lat: 26.8, lon: 82.0 }),
+          fetchRecommendations({ location: { lat: 26.8, lon: 82.0 } }),
           fetchMarketPrices()
         ]);
         if (r.status === "fulfilled") setRecs(r.value?.crops || []);
         else setRecs([]);
-        if (p.status === "fulfilled") setPrices(p.value?.markets || []);
+        if (p.status === "fulfilled") setPrices(p.value?.series || []);
         else setPrices([]);
       } catch {
         setRecs([]);

@@ -1,3 +1,4 @@
+// src/i18n.js
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 
@@ -6,11 +7,22 @@ const resources = {
     translation: {
       appName: "AgriVision",
       nav: {
+        home: "Home",
         dashboard: "Dashboard",
-        disease: "Disease Detect",
-        chat: "Assistant"
+        fields: "Fields",
+        prices: "Prices",
+        diseaseDetect: "Disease Detect",
+        assistant: "Assistant",
+        settings: "Settings",
+        login: "Login",
+        register: "Register"
       },
-      actions: { upload: "Upload", detect: "Detect", speak: "Speak", stop: "Stop" },
+      actions: {
+        upload: "Upload",
+        detect: "Detect",
+        speak: "Speak",
+        stop: "Stop"
+      },
       labels: {
         cropRecommendations: "Crop Recommendations",
         marketPrices: "Market Prices",
@@ -28,11 +40,22 @@ const resources = {
     translation: {
       appName: "एग्रीविज़न",
       nav: {
+        home: "होम",
         dashboard: "डैशबोर्ड",
-        disease: "रोग पहचान",
-        chat: "सहायक"
+        fields: "फील्ड्स",
+        prices: "कीमतें",
+        diseaseDetect: "रोग पहचान",
+        assistant: "सहायक",
+        settings: "सेटिंग्स",
+        login: "लॉगिन",
+        register: "रजिस्टर"
       },
-      actions: { upload: "अपलोड", detect: "पहचानें", speak: "बोलें", stop: "रोकें" },
+      actions: {
+        upload: "अपलोड",
+        detect: "पहचानें",
+        speak: "बोलें",
+        stop: "रोकें"
+      },
       labels: {
         cropRecommendations: "फसल सिफारिशें",
         marketPrices: "बाज़ार मूल्य",
@@ -48,14 +71,12 @@ const resources = {
   }
 };
 
-i18n
-  .use(initReactI18next)
-  .init({
-    resources,
-    lng: "en",           // default
-    fallbackLng: "en",
-    interpolation: { escapeValue: false },
-    returnNull: false,
-  });
+i18n.use(initReactI18next).init({
+  resources,
+  lng: "en", // default language
+  fallbackLng: "en",
+  interpolation: { escapeValue: false },
+  returnNull: false
+});
 
 export default i18n;

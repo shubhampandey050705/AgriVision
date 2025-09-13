@@ -1,0 +1,16 @@
+{
+  "appName": "AgriVision",
+  "nav": {
+    "home": "होम",
+    "dashboard": "डैशबोर्ड",
+    "fields": "फ़ील्ड्स",
+    "prices": "कीमतें",
+    "diseaseDetect": "रोग पहचान",
+    "assistant": "सहायक",
+    "settings": "सेटिंग्स",
+    "login": "लॉगिन",
+    "register": "रजिस्टर"
+  },
+  "labels": { "askAnything": "कुछ भी पूछें..." },
+  "actions": { "speak": "बोलें", "stop": "रोकें", "detect": "डिटेक्ट" }
+}

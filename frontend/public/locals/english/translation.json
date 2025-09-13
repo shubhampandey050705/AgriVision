@@ -1,0 +1,16 @@
+{
+  "appName": "AgriVision",
+  "nav": {
+    "home": "Home",
+    "dashboard": "Dashboard",
+    "fields": "Fields",
+    "prices": "Prices",
+    "diseaseDetect": "Disease Detect",
+    "assistant": "Assistant",
+    "settings": "Settings",
+    "login": "Login",
+    "register": "Register"
+  },
+  "labels": { "askAnything": "Ask anything..." },
+  "actions": { "speak": "Speak", "stop": "Stop", "detect": "Detect" }
+}

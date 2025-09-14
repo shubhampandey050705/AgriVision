@@ -16,7 +16,7 @@ export default function Tabs({ tabs = [], defaultId }) {
             className={cn(
               "px-3 py-1.5 rounded-xl text-sm border transition-colors",
               active === t.id
-                ? "bg-brand-500 text-white border-brand-500 shadow-glow"
+                ? "bg-emerald-500 text-white border-emerald-500 shadow"
                 : "bg-neutral-100 dark:bg-neutral-800 border-neutral-200 dark:border-neutral-700 hover:bg-neutral-200/70 dark:hover:bg-neutral-700"
             )}
             type="button"

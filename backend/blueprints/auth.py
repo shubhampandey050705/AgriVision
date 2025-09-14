@@ -1,22 +1,9 @@
-<<<<<<< HEAD
-# blueprints/auth.py
-from datetime import datetime, timedelta
-import random
-from time import time
-
-import jwt
-from flask import Blueprint, request, jsonify, current_app
-from sqlalchemy import select
-
-from db import SessionLocal
-=======
 # backend/blueprints/auth.py
 from flask import Blueprint, request, jsonify, g
 from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy.exc import IntegrityError
 from datetime import datetime, timedelta
 import random
->>>>>>> 16afa67 (feat(auth): add password login + OTP)
 from models import User
 
 bp = Blueprint("auth", __name__, url_prefix="/api/auth")
@@ -26,51 +13,11 @@ def _gen_otp(n=6):
     start, end = 10 ** (n - 1), (10 ** n) - 1
     return str(random.randint(start, end))
 
-<<<<<<< HEAD
-
-def _now() -> int:
-    return int(time())
-
-
-@bp.post("/register")
-def register():
-    data = request.get_json(silent=True) or {}
-    name = (data.get("name") or "").strip()
-    email = (data.get("email") or "").strip()
-    phone = (data.get("phone") or "").strip()
-    village = (data.get("village") or "").strip()
-    if not all([name, email, phone, village]):
-        return jsonify(error="All fields are required"), 400
-    with SessionLocal() as db:
-        exists = db.execute(
-            select(User).where((User.email == email) | (User.phone == phone))
-        ).scalar_one_or_none()
-        if exists:
-            return jsonify(error="User already exists"), 400
-        user = User(name=name, email=email, phone=phone, village=village)
-        db.add(user)
-        db.commit()
-        db.refresh(user)
-        return (
-            jsonify(
-                {
-                    "id": user.id,
-                    "name": user.name,
-                    "email": user.email,
-                    "phone": user.phone,
-                    "village": user.village,
-                }
-            ),
-            201,
-        )
-
-=======
 def _find_user_by_identifier(identifier: str):
     """identifier may be email or phone."""
     if "@" in identifier:
         return g.db.query(User).filter(User.email == identifier.lower()).first()
     return g.db.query(User).filter(User.phone == identifier).first()
->>>>>>> 16afa67 (feat(auth): add password login + OTP)
 
 
 # -------- register (password required) --------
@@ -152,29 +99,12 @@ def request_otp():
     return jsonify({"message": "OTP sent", "dev_otp": u.otp_code}), 200
 
 
-
 @bp.post("/verify-otp")
 def verify_otp():
     data = request.get_json(silent=True) or {}
     phone = (data.get("phone") or "").strip()
     otp   = (data.get("otp") or "").strip()
 
-<<<<<<< HEAD
-    with SessionLocal() as db:
-        user = db.execute(select(User).where(User.phone == phone)).scalar_one_or_none()
-        if not user:
-            return jsonify(error="User not found"), 404
-
-    _OTP_STORE.pop(phone, None)
-
-    payload = {
-        "sub": user.id,
-        "phone": user.phone,
-        "exp": datetime.utcnow() + timedelta(days=7),
-    }
-    token = jwt.encode(payload, current_app.config["SECRET_KEY"], algorithm="HS256")
-    return jsonify(message="Login success", token=token), 200
-=======
     u = g.db.query(User).filter_by(phone=phone).first()
     if not u or not u.otp_code:
         return jsonify({"error": "OTP not requested"}), 400
@@ -187,4 +117,3 @@ def verify_otp():
     u.otp_expires = None
     g.db.flush()
     return jsonify({"message": "Login ok", "user": u.to_public_dict(), "token": "dev-token"}), 200
->>>>>>> 16afa67 (feat(auth): add password login + OTP)

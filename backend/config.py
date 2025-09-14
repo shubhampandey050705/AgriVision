@@ -11,10 +11,4 @@ class Config:
         ]
 
     SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URL", "sqlite:///agrivision.db")
-<<<<<<< HEAD
-    MAX_CONTENT_LENGTH = int(os.getenv("MAX_CONTENT_LENGTH", 8 * 1024 * 1024))  # 8 MB uploads
-    # Secret key for JWT signing/session management
-    SECRET_KEY = os.getenv("SECRET_KEY", "dev-secret")
-=======
     MAX_CONTENT_LENGTH = int(os.getenv("MAX_CONTENT_LENGTH", 8 * 1024 * 1024))
->>>>>>> 16afa67 (feat(auth): add password login + OTP)

@@ -5,13 +5,8 @@ from werkzeug.exceptions import HTTPException
 from sqlalchemy import text
 
 from config import Config
-<<<<<<< HEAD
-from db import Base, engine
-from models import Field, User  # ensure models are imported so metadata is registered
-=======
 from db import Base, engine, SessionLocal
 from models import Field, User        # <-- FIXED: import User correctly
->>>>>>> 16afa67 (feat(auth): add password login + OTP)
 from blueprints import register_blueprints
 
 # Weather service

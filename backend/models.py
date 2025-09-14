@@ -5,17 +5,6 @@ from sqlalchemy import (
 from db import Base
 
 
-<<<<<<< HEAD
-class User(Base):
-    __tablename__ = "users"
-    id = Column(Integer, primary_key=True, index=True)
-    name = Column(String, nullable=False)
-    email = Column(String, nullable=False, unique=True, index=True)
-    phone = Column(String, nullable=False, unique=True, index=True)
-    village = Column(String, nullable=True)
-
-
-=======
 # ---------------------------
 # User model (for /api/auth/*)
 # ---------------------------
@@ -65,7 +54,6 @@ class User(Base):
 # ---------------------------
 # Field model (existing)
 # ---------------------------
->>>>>>> 16afa67 (feat(auth): add password login + OTP)
 class Field(Base):
     __tablename__ = "fields"
 

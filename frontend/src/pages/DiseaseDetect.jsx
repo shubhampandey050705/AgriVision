@@ -18,7 +18,9 @@ export default function DiseaseDetect() {
       setResult(res);
     } catch (e) {
       setResult({ error: "Service not reachable. Connect ML API." });
-    } finally { setBusy(false); }
+    } finally {
+      setBusy(false);
+    }
   };
 
   return (
@@ -26,11 +28,17 @@ export default function DiseaseDetect() {
       <Card title={t("nav.disease")}>
         <div className="space-y-4">
           <FileDrop onFile={setFile} />
-          {file && <img src={URL.createObjectURL(file)} alt="preview" className="rounded-xl w-full object-cover max-h-80" />}
+          {file && (
+            <img
+              src={URL.createObjectURL(file)}
+              alt="preview"
+              className="rounded-xl w-full object-cover max-h-80"
+            />
+          )}
           <button
             onClick={runDetect}
             disabled={!file || busy}
-            className="w-full rounded-xl bg-sky-600 text-white py-2 disabled:opacity-50"
+            className="w-full rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white py-2 transition disabled:opacity-50"
           >
             {busy ? "Detecting…" : t("actions.detect")}
           </button>
@@ -38,7 +46,9 @@ export default function DiseaseDetect() {
       </Card>
 
       <Card title="Result">
-        <pre className="text-xs overflow-auto">{result ? JSON.stringify(result, null, 2) : "No result yet"}</pre>
+        <pre className="text-xs overflow-auto">
+          {result ? JSON.stringify(result, null, 2) : "No result yet"}
+        </pre>
       </Card>
     </div>
   );

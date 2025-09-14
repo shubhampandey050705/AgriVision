@@ -52,22 +52,33 @@ export default function Chat() {
           value={listening ? transcript : input}
           onChange={(e) => setInput(e.target.value)}
         />
+
+        {/* 🎤 Speak button */}
         {!listening ? (
-          <Button variant="subtle" onClick={start}>
+          <Button
+            onClick={start}
+            className="bg-emerald-500 text-white px-4 py-2 rounded-md hover:bg-emerald-600 transition flex items-center"
+          >
             <Mic className="w-4 h-4 mr-1.5" /> {t("actions.speak")}
           </Button>
         ) : (
+          /* ⏹ Stop button */
           <Button
-            variant="outline"
             onClick={() => {
               stop();
               setInput(transcript);
             }}
+            className="bg-emerald-500 text-white px-4 py-2 rounded-md hover:bg-emerald-600 transition flex items-center"
           >
             <Square className="w-4 h-4 mr-1.5" /> {t("actions.stop")}
           </Button>
         )}
-        <Button onClick={() => send(listening ? transcript : input)}>
+
+        {/* 📤 Send button */}
+        <Button
+          onClick={() => send(listening ? transcript : input)}
+          className="bg-emerald-500 text-white px-4 py-2 rounded-md hover:bg-emerald-600 transition flex items-center"
+        >
           <SendHorizontal className="w-4 h-4 mr-1.5" /> Send
         </Button>
       </div>

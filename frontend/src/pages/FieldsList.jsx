@@ -10,27 +10,43 @@ export default function FieldsList() {
     <div className="space-y-4">
       <div className="flex justify-between items-center">
         <h2 className="text-xl font-semibold">My Fields</h2>
-        <Link to="/app/fields/new"><Button>Add field</Button></Link>
+        <Link to="/app/fields/new">
+          {/* ✅ Emerald button */}
+          <Button className="bg-emerald-500 text-white px-4 py-2 rounded-md hover:bg-emerald-600 transition">
+            Add field
+          </Button>
+        </Link>
       </div>
 
       {!fields.length ? (
         <Card>
-          <div className="opacity-70 text-sm">No fields yet. Click “Add field”.</div>
-        </Card>
-      ) : fields.map(f => (
-        <Card key={f.id}>
-          <div className="flex items-center justify-between">
-            <div>
-              <div className="font-medium">{f.name}</div>
-              <div className="text-sm opacity-70">{f.area} acres • {f.village}</div>
-            </div>
-            <div className="flex items-center gap-2">
-              <Badge>{f.crop || "No crop"}</Badge>
-              <Link to={`/app/fields/${f.id}`} className="underline text-sm">Open</Link>
-            </div>
+          <div className="opacity-70 text-sm">
+            No fields yet. Click “Add field”.
           </div>
         </Card>
-      ))}
+      ) : (
+        fields.map((f) => (
+          <Card key={f.id}>
+            <div className="flex items-center justify-between">
+              <div>
+                <div className="font-medium">{f.name}</div>
+                <div className="text-sm opacity-70">
+                  {f.area} acres • {f.village}
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                <Badge>{f.crop || "No crop"}</Badge>
+                <Link
+                  to={`/app/fields/${f.id}`}
+                  className="underline text-sm"
+                >
+                  Open
+                </Link>
+              </div>
+            </div>
+          </Card>
+        ))
+      )}
     </div>
   );
 }

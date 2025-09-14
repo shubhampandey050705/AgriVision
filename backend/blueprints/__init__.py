@@ -5,7 +5,7 @@ from .markets import bp as markets_bp
 from .weather import bp as weather_bp
 from .detect import bp as detect_bp
 from .recommendations import bp as recs_bp
-from .auth import bp as auth_bp   # <-- NEW
+from .auth import bp as auth_bp  # <-- ensures /api/auth/* exists
 
 def register_blueprints(app):
     app.register_blueprint(health_bp)
@@ -14,4 +14,4 @@ def register_blueprints(app):
     app.register_blueprint(weather_bp)
     app.register_blueprint(detect_bp)
     app.register_blueprint(recs_bp)
-    app.register_blueprint(auth_bp)   # <-- NEW
+    app.register_blueprint(auth_bp)  # <-- /api/auth/register & /api/auth/login

@@ -5,7 +5,7 @@ from werkzeug.exceptions import HTTPException
 
 from config import Config
 from db import Base, engine
-from models import Field  # ensure model module is imported so metadata is registered
+from models import Field, User  # ensure models are imported so metadata is registered
 from blueprints import register_blueprints
 
 # Import your weather service

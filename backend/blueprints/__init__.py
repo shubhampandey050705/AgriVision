@@ -6,6 +6,9 @@ from .weather import bp as weather_bp
 from .detect import bp as detect_bp
 from .recommendations import bp as recs_bp
 from .auth import bp as auth_bp  # <-- ensures /api/auth/* exists
+from .ml import ml_bp
+from .ml_meta import bp_ml_meta
+
 
 def register_blueprints(app):
     app.register_blueprint(health_bp)
@@ -15,3 +18,6 @@ def register_blueprints(app):
     app.register_blueprint(detect_bp)
     app.register_blueprint(recs_bp)
     app.register_blueprint(auth_bp)  # <-- /api/auth/register & /api/auth/login
+    app.register_blueprint(ml_bp)
+    app.register_blueprint(bp_ml_meta)
+

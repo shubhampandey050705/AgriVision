@@ -6,11 +6,19 @@ from sqlalchemy import text
 
 from config import Config
 from db import Base, engine, SessionLocal
-from models import Field, User        # <-- FIXED: import User correctly
-from blueprints import register_blueprints
+from models import Field, User  # ensure models imported before create_all
 
-# Weather service
-from services.weather_service import forecast
+# Optional imports — app should still run if these aren't present
+try:
+    from blueprints import register_blueprints  # your collector, if defined
+except Exception:
+    register_blueprints = None
+
+try:
+    # Direct ML blueprint, used only if register_blueprints is not available
+    from blueprints.ml import ml_bp
+except Exception:
+    ml_bp = None
 
 
 def create_app():
@@ -21,25 +29,16 @@ def create_app():
     app.url_map.strict_slashes = False
 
     # ---- DB init (create tables if not exist) ----
-    # IMPORTANT: ensure all models are imported BEFORE this line
     Base.metadata.create_all(bind=engine)
-
-    # Make session factory available to blueprints if needed
     app.config["SESSION_FACTORY"] = SessionLocal
 
     # ---- CORS ----
     default_origins = [
-        "http://localhost:5173",
-        "http://127.0.0.1:5173",
-        "http://localhost:5174",
-        "http://127.0.0.1:5174",
-        "http://localhost:5175",
-        "http://127.0.0.1:5175",
-
+        "http://localhost:5173", "http://127.0.0.1:5173",
+        "http://localhost:5174", "http://127.0.0.1:5174",
+        "http://localhost:5175", "http://127.0.0.1:5175",
     ]
     origins = getattr(Config, "CORS_ORIGINS", default_origins) or default_origins
-
-    # This enables proper preflight handling for /api/*, including OPTIONS
     CORS(
         app,
         resources={r"/api/*": {"origins": origins}},
@@ -49,20 +48,19 @@ def create_app():
         expose_headers=["Content-Type"],
     )
 
-    # Extra safety: acknowledge OPTIONS preflight
+    # Proper preflight response
     @app.before_request
-    def handle_preflight():
+    def _handle_preflight():
         if request.method == "OPTIONS":
-            resp = make_response("", 204)
-            return resp
+            return make_response("", 204)
 
     # ---- Session-per-request plumbing ----
     @app.before_request
-    def open_session():
+    def _open_session():
         g.db = SessionLocal()
 
     @app.teardown_request
-    def close_session(exc):
+    def _close_session(exc):
         db = getattr(g, "db", None)
         if db is None:
             return
@@ -75,7 +73,12 @@ def create_app():
             db.close()
 
     # ---- Blueprints ----
-    register_blueprints(app)  # must register /api/auth/*, /api/*, etc.
+    if register_blueprints:
+        # If you have a central collector, it should register all blueprints (including ML).
+        register_blueprints(app)
+    elif ml_bp:
+        # Fallback: only ML blueprint
+        app.register_blueprint(ml_bp)  # /api/ml/predict
 
     # ---- Health/Index ----
     @app.get("/")
@@ -155,20 +158,6 @@ def create_app():
         g.db.delete(f)
         return jsonify({"deleted": field_id}), 200
 
-    # ---- Weather API ----
-    @app.get("/api/weather")
-    def get_weather():
-        city = request.args.get("city")
-        lat = request.args.get("lat", type=float)
-        lon = request.args.get("lon", type=float)
-
-        if city:
-            return jsonify(forecast(city=city)), 200
-        elif lat is not None and lon is not None:
-            return jsonify(forecast(lat=lat, lon=lon)), 200
-        else:
-            return jsonify({"error": "Provide either ?city=Delhi or ?lat=..&lon=.."}), 400
-
     # ---- JSON Error handlers ----
     @app.errorhandler(400)
     @app.errorhandler(404)
@@ -176,23 +165,21 @@ def create_app():
     @app.errorhandler(413)
     @app.errorhandler(415)
     @app.errorhandler(422)
-    def handled_http_errors(err):
+    def _handled_http_errors(err):
         db = getattr(g, "db", None)
         if db is not None:
             db.rollback()
-
         code = getattr(err, "code", 500)
         msg = getattr(err, "description", str(err))
         return jsonify({"error": f"{code} {msg}"}), code
 
     @app.errorhandler(Exception)
-    def unhandled(err):
+    def _unhandled(err):
         db = getattr(g, "db", None)
         if db is not None:
             db.rollback()
-
         if isinstance(err, HTTPException):
-            return handled_http_errors(err)
+            return _handled_http_errors(err)
         return jsonify({"error": "500 Internal Server Error"}), 500
 
     # ---- Debug: print all registered routes on startup ----
@@ -209,5 +196,4 @@ def create_app():
 
 if __name__ == "__main__":
     app = create_app()
-    # 0.0.0.0 so frontend or other devices/containers can reach it
     app.run(host="0.0.0.0", port=5000, debug=True)

@@ -136,3 +136,40 @@ Create .env in agrivision-frontend/:
 VITE_API_URL=http://127.0.0.1:5000
 
 
+ml-service/
+├─ app/
+│  ├─ main.py                  # FastAPI app
+│  ├─ routes_crop.py           # /predict/crops, /train/crops
+│  ├─ routes_disease.py        # /predict/disease, /train/disease
+│  ├─ schemas.py               # Pydantic request/response models
+│  ├─ deps_market.py           # market price loader/cache
+│  ├─ utils_preprocess.py      # soil/weather preprocessing
+│  ├─ model_registry.py        # load/save/version models
+│  └─ settings.py              # env config
+├─ models/
+│  ├─ crop_reco_v1.joblib      # sklearn/xgboost pipeline
+│  ├─ crop_meta.json           # label list, feature config
+│  └─ disease_efficientnet_v1.keras
+├─ data/
+│  ├─ soil_readings.csv
+│  ├─ weather_daily.csv
+│  ├─ crop_history.csv
+│  ├─ yields.csv               # historical yield by crop/field/date
+│  └─ market_prices.csv        # date, crop, mandi/state, modal
+├─ training/
+│  ├─ train_crop.py
+│  └─ train_disease.py
+├─ requirements.txt
+└─ Dockerfile
+
+cd ml
+python -m venv .venv
+# On Windows PowerShell
+.\.venv\Scripts\Activate.ps1
+# On Linux/Mac
+source .venv/bin/activate
+
+pip install -r requirements.txt
+
+# from project root (AgriVision/)
+uvicorn ml.app.main:app --reload --port 8001

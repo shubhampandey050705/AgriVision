@@ -1,0 +1,66 @@
+{
+  "crops": [
+    "Chickpea",
+    "Cotton",
+    "Maize",
+    "Rice"
+  ],
+  "features_num": [
+    "ph",
+    "moisture",
+    "n",
+    "p",
+    "k",
+    "rain_sum",
+    "tmin_avg",
+    "tmax_avg",
+    "humidity_avg",
+    "wind_avg",
+    "area_ha",
+    "lat",
+    "lon",
+    "sowing_month"
+  ],
+  "features_cat": [
+    "prev_crop_1",
+    "prev_crop_2",
+    "village",
+    "state",
+    "irrigation",
+    "crop"
+  ],
+  "target": "yield_q_per_ha",
+  "metrics": {
+    "train_mae": 3.590063063207506,
+    "train_r2": 0.6298685178264583,
+    "test_mae": 3.7985651652895758,
+    "test_r2": 0.6067865303218104,
+    "n_train": 40612,
+    "n_test": 10153,
+    "features_num": [
+      "ph",
+      "moisture",
+      "n",
+      "p",
+      "k",
+      "rain_sum",
+      "tmin_avg",
+      "tmax_avg",
+      "humidity_avg",
+      "wind_avg",
+      "area_ha",
+      "lat",
+      "lon",
+      "sowing_month"
+    ],
+    "features_cat": [
+      "prev_crop_1",
+      "prev_crop_2",
+      "village",
+      "state",
+      "irrigation",
+      "crop"
+    ],
+    "target": "yield_q_per_ha"
+  }
+}

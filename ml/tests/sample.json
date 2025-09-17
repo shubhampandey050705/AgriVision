@@ -1,0 +1,23 @@
+{
+  "ph": 6.6,
+  "moisture": 22.5,
+  "n": 90,
+  "p": 40,
+  "k": 38,
+  "rain_sum": 180.0,
+  "tmin_avg": 21.0,
+  "tmax_avg": 33.5,
+  "humidity_avg": 64.0,
+  "wind_avg": 8.0,
+  "area_ha": 1.5,
+  "lat": 26.85,
+  "lon": 80.95,
+  "sowing_month": 6,
+
+  "prev_crop_1": "Wheat",
+  "prev_crop_2": "Mustard",
+  "village": "GautamBudhNagar",
+  "state": "UP",
+  "irrigation": "canal",
+  "crop": "Rice"
+}

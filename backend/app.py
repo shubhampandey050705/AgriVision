@@ -1,4 +1,3 @@
-# backend/app.py
 from flask import Flask, jsonify, g, request, make_response
 from flask_cors import CORS
 from werkzeug.exceptions import HTTPException
@@ -19,6 +18,12 @@ try:
     from blueprints.ml import ml_bp
 except Exception:
     ml_bp = None
+
+try:
+    # Gemini blueprint
+    from blueprints.gemini import gemini_bp
+except Exception:
+    gemini_bp = None
 
 
 def create_app():
@@ -76,9 +81,14 @@ def create_app():
     if register_blueprints:
         # If you have a central collector, it should register all blueprints (including ML).
         register_blueprints(app)
-    elif ml_bp:
-        # Fallback: only ML blueprint
-        app.register_blueprint(ml_bp)  # /api/ml/predict
+    else:
+        # Register blueprints individually
+        if ml_bp:
+            app.register_blueprint(ml_bp)  # /api/ml/predict
+        
+        # Register Gemini blueprint
+        if gemini_bp:
+            app.register_blueprint(gemini_bp)  # /api/generate-text
 
     # ---- Health/Index ----
     @app.get("/")
